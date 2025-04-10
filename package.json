@@ -5,7 +5,9 @@
   "type": "module",
   "author": "Prabhu",
   "description": "Your Personal Finance management tool",
-  "scripts": {},
+  "scripts": {
+    "dev": "pnpm run -r --parallel --aggregate-output dev"
+  },
   "keywords": [
     "personal finance",
     "budgeting",
