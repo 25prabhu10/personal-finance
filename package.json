@@ -1,0 +1,19 @@
+{
+  "name": "pf",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "author": "Prabhu",
+  "description": "Your Personal Finance management tool",
+  "scripts": {},
+  "keywords": [
+    "personal finance",
+    "budgeting",
+    "expense tracking",
+    "income tracking"
+  ],
+  "packageManager": "pnpm@10.8.0",
+  "engines": {
+    "node": ">=23"
+  }
+}
