@@ -10,6 +10,6 @@ if (container !== null) {
   createRoot(container).render(
     <StrictMode>
       <App />
-    </StrictMode>,
+    </StrictMode>
   )
 }

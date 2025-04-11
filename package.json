@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "pnpm run -r --parallel --aggregate-output dev",
     "lint": "pnpm run -r --parallel lint",
-    "lint:fix": "pnpm run -r --parallel lint:fix"
+    "lint:fix": "pnpm run -r --parallel lint:fix",
+    "format": "pnpm run -r --parallel format"
   },
   "keywords": [
     "personal finance",

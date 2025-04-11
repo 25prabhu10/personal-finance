@@ -1,0 +1,26 @@
+{
+  "name": "@pf/prettier-config",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Prettier configuration for Personal Finance management tool",
+  "type": "module",
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "prettier"
+  ],
+  "peerDependencies": {
+    "prettier": ">=3.0.0"
+  },
+  "devDependencies": {
+    "prettier": "3.5.3",
+    "prettier-plugin-packagejson": "^2.5.10"
+  },
+  "author": "Prabhu",
+  "packageManager": "pnpm@10.8.0",
+  "engines": {
+    "node": ">=23"
+  }
+}
