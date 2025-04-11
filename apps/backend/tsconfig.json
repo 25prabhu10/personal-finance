@@ -1,17 +1,16 @@
 {
+  "extends": "@pf/typescript-config/tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/api/*": ["./src/*"]
     },
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "strict": true,
-    "verbatimModuleSyntax": true,
-    "skipLibCheck": true,
     "types": ["node"],
     "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx"
+    "jsxImportSource": "hono/jsx",
+    "outDir": "./dist"
+  },
+  "tsc-alias": {
+    "resolveFullPaths": true
   }
 }
