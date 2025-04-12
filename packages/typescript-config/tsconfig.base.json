@@ -1,23 +1,23 @@
 {
-    "$schema": "https://json.schemastore.org/tsconfig",
-    "compilerOptions": {
-      "declaration": true,
-      "declarationMap": true,
-      "esModuleInterop": true,
-      "incremental": false,
-      "isolatedModules": true,
-      "target": "ESNext",
-      "module": "ESNext",
-      "moduleDetection": "force",
-      "moduleResolution": "bundler",
-      "noUncheckedIndexedAccess": true,
-      "resolveJsonModule": true,
-      "skipLibCheck": true,
-      "verbatimModuleSyntax": true,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "noFallthroughCasesInSwitch": true,
-      "noUncheckedSideEffectImports": true,
-      "strict": true
-    }
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "incremental": false,
+    "isolatedModules": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "moduleResolution": "bundler",
+    "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "verbatimModuleSyntax": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "strict": true
   }
+}

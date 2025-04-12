@@ -1,6 +1,6 @@
-import type { Config } from 'prettier'
+import type { Config } from "prettier";
 
-declare module '@pf/prettier-config' {
-  const config: Config
-  export default config
+declare module "@pf/prettier-config" {
+  const config: Config;
+  export default config;
 }

@@ -11,10 +11,12 @@
     "lint:fix": "pnpm run -r --parallel lint:fix",
     "format": "pnpm run -r --parallel format",
     "build": "pnpm run -r build",
-    "check-types": "pnpm run -r --parallel check-types"
+    "check-types": "pnpm run -r --parallel check-types",
+    "format:ws": "prettier --write . --ignore-unknown"
   },
   "devDependencies": {
     "lint-staged": "^15.5.0",
+    "prettier": "^3.5.3",
     "simple-git-hooks": "^2.12.1",
     "typescript": "^5.8.3"
   },
@@ -32,6 +34,12 @@
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,md,html,css,json}": "pnpm run format"
+    "*.{js,jsx,ts,tsx}": [
+      "pnpm run lint"
+    ],
+    "*.{js,jsx,ts,tsx,md,html,css,json}": [
+      "pnpm run format",
+      "pnpm run format:ws"
+    ]
   }
 }

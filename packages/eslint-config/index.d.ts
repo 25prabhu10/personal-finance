@@ -1,6 +1,6 @@
-import type { ConfigArray } from 'typescript-eslint'
+import type { ConfigArray } from "typescript-eslint";
 
-declare module '@pf/eslint-config' {
-  const config: ConfigArray
-  export default config
+declare module "@pf/eslint-config" {
+  const config: ConfigArray;
+  export default config;
 }

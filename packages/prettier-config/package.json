@@ -11,6 +11,12 @@
   "keywords": [
     "prettier"
   ],
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "types": "./index.d.ts"
+    }
+  },
   "peerDependencies": {
     "prettier": ">=3.0.0"
   },

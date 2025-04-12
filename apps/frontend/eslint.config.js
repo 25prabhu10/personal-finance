@@ -8,8 +8,7 @@ import reactX from 'eslint-plugin-react-x'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
-export default tseslint.config({
-  extends: [...baseConfig],
+export default tseslint.config(baseConfig, {
   files: ['**/*.{ts,tsx}'],
   languageOptions: {
     ecmaVersion: 2022,
@@ -20,7 +19,7 @@ export default tseslint.config({
       window: 'readonly'
     },
     parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      projectService: true,
       tsconfigRootDir: import.meta.dirname
     }
   },
