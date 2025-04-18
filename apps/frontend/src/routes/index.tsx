@@ -5,6 +5,15 @@ export const Route = createFileRoute('/')({
   component: Index
 })
 
+function FeatureCard({ description, title }: { description: string; title: string }) {
+  return (
+    <div className="rounded-lg border border-gray-200 p-6 shadow-sm">
+      <h3 className="mb-2 text-xl font-semibold">{title}</h3>
+      <p className="text-gray-600">{description}</p>
+    </div>
+  )
+}
+
 function Index() {
   const { isAuthenticated } = useAuth()
 
@@ -17,19 +26,19 @@ function Index() {
         </p>
 
         {isAuthenticated ? (
-          <Link to="/" className="rounded bg-blue-600 px-6 py-3 text-white hover:bg-blue-700">
+          <Link className="rounded bg-blue-600 px-6 py-3 text-white hover:bg-blue-700" to="/">
             Go to Dashboard
           </Link>
         ) : (
           <div className="flex justify-center gap-4">
             <Link
-              to="/login"
-              className="rounded bg-blue-600 px-6 py-3 text-white hover:bg-blue-700">
+              className="rounded bg-blue-600 px-6 py-3 text-white hover:bg-blue-700"
+              to="/login">
               Login
             </Link>
             <Link
-              to="/"
-              className="rounded border border-blue-600 px-6 py-3 text-blue-600 hover:bg-blue-50">
+              className="rounded border border-blue-600 px-6 py-3 text-blue-600 hover:bg-blue-50"
+              to="/">
               Sign Up
             </Link>
           </div>
@@ -38,27 +47,18 @@ function Index() {
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         <FeatureCard
-          title="Track Expenses"
           description="Easily record and categorize your daily expenses"
+          title="Track Expenses"
         />
         <FeatureCard
-          title="Budget Management"
           description="Create and manage budgets to stay on top of your spending"
+          title="Budget Management"
         />
         <FeatureCard
-          title="Financial Goals"
           description="Set and track progress toward your financial goals"
+          title="Financial Goals"
         />
       </div>
-    </div>
-  )
-}
-
-function FeatureCard({ title, description }: { title: string; description: string }) {
-  return (
-    <div className="rounded-lg border border-gray-200 p-6 shadow-sm">
-      <h3 className="mb-2 text-xl font-semibold">{title}</h3>
-      <p className="text-gray-600">{description}</p>
     </div>
   )
 }

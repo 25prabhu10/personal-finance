@@ -25,3 +25,7 @@ This project is built as a monorepo using:
    ```bash
    pnpm run dev
    ```
+
+## Todo
+
+- [ ] Replace `prettier-plugin-packagejson` with `JoshuaKGoldberg/eslint-plugin-package-json`

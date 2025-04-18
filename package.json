@@ -2,40 +2,40 @@
   "name": "pf",
   "version": "0.0.1",
   "private": true,
-  "type": "module",
-  "author": "Prabhu",
   "description": "Your Personal Finance management tool",
-  "scripts": {
-    "dev": "pnpm run -r --parallel --aggregate-output dev",
-    "lint": "pnpm run -r --parallel lint",
-    "lint:fix": "pnpm run -r --parallel lint:fix",
-    "format": "pnpm run -r --parallel format",
-    "build": "pnpm run -r build",
-    "check-types": "pnpm run -r --parallel check-types",
-    "format:ws": "prettier --write . --ignore-unknown"
-  },
-  "devDependencies": {
-    "lint-staged": "^15.5.1",
-    "prettier": "^3.5.3",
-    "simple-git-hooks": "^2.12.1",
-    "typescript": "^5.8.3"
-  },
   "keywords": [
     "personal finance",
     "budgeting",
     "expense tracking",
     "income tracking"
   ],
-  "packageManager": "pnpm@10.8.1",
-  "engines": {
-    "node": ">=23"
+  "author": "Prabhu",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm run -r build",
+    "check-types": "pnpm run -r --parallel check-types",
+    "dev": "pnpm run -r --parallel --aggregate-output dev",
+    "format": "prettier --write . --ignore-unknown",
+    "lint": "pnpm run -r --parallel lint",
+    "lint:fix": "pnpm run -r --parallel lint:fix"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,md,html,css,json}": [
-      "pnpm run format:ws"
+      "pnpm run format"
     ]
+  },
+  "devDependencies": {
+    "lint-staged": "^15.5.1",
+    "prettier": "^3.5.3",
+    "prettier-plugin-packagejson": "^2.5.10",
+    "simple-git-hooks": "^2.12.1",
+    "typescript": "^5.8.3"
+  },
+  "packageManager": "pnpm@10.8.1",
+  "engines": {
+    "node": ">=23"
   }
 }

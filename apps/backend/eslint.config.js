@@ -6,7 +6,7 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 export default tseslint.config(nodePlugin.configs['flat/recommended-script'], baseConfig, {
-  files: ['**/*.{ts,tsx}'],
+  files: ['**/*.{js,ts,tsx}'],
   languageOptions: {
     ecmaVersion: 'latest',
     globals: globals.node,

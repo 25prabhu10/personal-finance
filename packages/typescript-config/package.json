@@ -2,17 +2,17 @@
   "name": "@pf/typescript-config",
   "version": "0.0.1",
   "private": true,
-  "type": "module",
   "description": "TypeScript configuration for Personal Finance management tool",
-  "publishConfig": {
-    "access": "public"
-  },
   "keywords": [
     "typescript"
   ],
   "author": "Prabhu",
+  "type": "module",
   "packageManager": "pnpm@10.8.1",
   "engines": {
     "node": ">=23"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

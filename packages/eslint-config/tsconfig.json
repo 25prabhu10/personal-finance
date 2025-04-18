@@ -1,0 +1,8 @@
+{
+  "extends": "@pf/typescript-config/tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "outDir": "./dist"
+  }
+}

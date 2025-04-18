@@ -1,14 +1,15 @@
 import { useAuth } from '@/contexts/auth-context'
-import { Link, Outlet, createFileRoute, redirect, useRouter } from '@tanstack/react-router'
+import { createFileRoute, Link, Outlet, redirect, useRouter } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_auth')({
   beforeLoad: ({ context, location }) => {
     if (!context.auth.isAuthenticated) {
-      throw redirect({
-        to: '/login',
+      redirect({
         search: {
           redirect: location.href
-        }
+        },
+        throw: true,
+        to: '/login'
       })
     }
   },
@@ -20,13 +21,11 @@ function AuthLayout() {
   const navigate = Route.useNavigate()
   const auth = useAuth()
 
-  const handleLogout = () => {
-    if (window.confirm('Are you sure you want to logout?')) {
-      auth.logout().then(() => {
-        router.invalidate().finally(() => {
-          navigate({ to: '/' })
-        })
-      })
+  async function handleLogout() {
+    if (globalThis.confirm('Are you sure you want to logout?')) {
+      await auth.logout()
+      await router.invalidate()
+      await navigate({ to: '/' })
     }
   }
 
@@ -36,17 +35,17 @@ function AuthLayout() {
       <p>This route's content is only visible to authenticated users.</p>
       <ul className="flex gap-2 py-2">
         <li>
-          <Link to="/" className="hover:underline data-[status='active']:font-semibold">
+          <Link className="hover:underline data-[status='active']:font-semibold" to="/">
             Dashboard
           </Link>
         </li>
         <li>
-          <Link to="/" className="hover:underline data-[status='active']:font-semibold">
+          <Link className="hover:underline data-[status='active']:font-semibold" to="/">
             Invoices
           </Link>
         </li>
         <li>
-          <button type="button" className="hover:underline" onClick={handleLogout}>
+          <button className="hover:underline" onClick={() => handleLogout} type="button">
             Logout
           </button>
         </li>
