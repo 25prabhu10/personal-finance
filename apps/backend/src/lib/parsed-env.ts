@@ -11,7 +11,7 @@ const EnvSchema = z.object({
 
 export type ParsedEnv = z.infer<typeof EnvSchema>
 
-const { data: parsedEnv, error } = await EnvSchema.safeParseAsync(process.env)
+const { data: parsedEnv, error } = EnvSchema.safeParse(process.env)
 
 if (error) {
   console.error('❌ Invalid env:')
