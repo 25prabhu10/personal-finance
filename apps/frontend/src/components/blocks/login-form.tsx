@@ -7,12 +7,21 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Link } from '@tanstack/react-router'
+import { Eye, EyeOff } from 'lucide-react'
+import { useState } from 'react'
 
-export function LoginForm() {
+interface LoginFormProps {
+  onSubmit: (formData: FormData) => Promise<void>
+}
+
+export function LoginForm({ onSubmit }: LoginFormProps) {
+  const [showPassword, setShowPassword] = useState(false)
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword)
+
   return (
     <Card>
       <CardHeader className="space-y-1 text-center">
@@ -20,7 +29,7 @@ export function LoginForm() {
         <CardDescription>Enter your username and password to login to your account</CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form action={onSubmit}>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="username">Username</Label>
@@ -47,33 +56,41 @@ export function LoginForm() {
                   Forgot your password?
                 </Link>
               </div>
-              <Input
-                id="current-password"
-                maxLength={500}
-                minLength={8}
-                name="password"
-                placeholder="********"
-                required
-                title="Password must be at least 8 characters long, with at least one lowercase and one uppercase letter"
-                type="password"
-                autoComplete="current-password"
-                autoCorrect="off"
-                autoCapitalize="off"
-                aria-describedby="password-constraints"
-              />
+              <div className="relative">
+                <Input
+                  id="current-password"
+                  maxLength={500}
+                  minLength={8}
+                  name="password"
+                  placeholder="********"
+                  required
+                  title="Password must be at least 8 characters long, with at least one lowercase and one uppercase letter"
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  aria-describedby="password-constraints"
+                  className="pr-10"
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                  onClick={togglePasswordVisibility}
+                  title={showPassword ? 'Hide password' : 'Show password'}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}>
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" aria-hidden="true" />
+                  ) : (
+                    <Eye className="h-4 w-4" aria-hidden="true" />
+                  )}
+                </Button>
+              </div>
               <p id="password-constraints" className="text-xs text-muted-foreground">
                 Password must be at least 8 characters long, with at least one lowercase and one
                 uppercase letter
               </p>
-
-              <div className="flex items-center space-x-2">
-                <Checkbox id="terms" />
-                <label
-                  htmlFor="terms"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Accept terms and conditions
-                </label>
-              </div>
             </div>
             <Button className="w-full" type="submit">
               Login

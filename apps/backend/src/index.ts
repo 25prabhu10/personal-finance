@@ -1,18 +1,18 @@
+import parsedEnv from '@/lib/parsed-env'
 import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
 
-const app = new Hono()
+import app from './app'
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
+const port = parsedEnv.PORT
+
+if (parsedEnv.NODE_ENV === 'development') {
+  await import('@/middlewares/pino-logger').then(({ appLogger }) => {
+    appLogger.info('Starting server...')
+    appLogger.info(JSON.stringify({ parsedEnv }, null, 2))
+  })
+}
+
+serve({
+  fetch: app.fetch,
+  port
 })
-
-serve(
-  {
-    fetch: app.fetch,
-    port: 3000
-  },
-  (info) => {
-    console.log(`Server is running on http://localhost:${info.port}`)
-  }
-)

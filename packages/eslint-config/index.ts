@@ -42,7 +42,13 @@ export default tseslint.config(
       'no-useless-rename': 'error',
       'object-shorthand': 'error',
       'operator-assignment': 'error',
-      'perfectionist/sort-objects': 'off'
+      'perfectionist/sort-objects': 'off',
+      'perfectionist/sort-imports': [
+        'error',
+        {
+          tsconfigRootDir: '.'
+        }
+      ]
     },
     settings: { perfectionist: { partitionByComment: true, type: 'natural' } }
   },

@@ -12,13 +12,19 @@
   "scripts": {
     "build": "tsc && tsc-alias",
     "check-types": "tsc --noEmit",
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch --env-file=.env src/index.ts",
     "lint": "eslint . --max-warnings 0",
-    "lint:fix": "eslint . --max-warnings 0 --fix"
+    "lint:fix": "eslint . --max-warnings 0 --fix",
+    "start": "node --env-file=.env dist/src/index.js"
   },
   "dependencies": {
     "@hono/node-server": "^1.14.0",
-    "hono": "^4.7.6"
+    "@hono/zod-openapi": "^0.19.5",
+    "@scalar/hono-api-reference": "^0.8.2",
+    "hono": "^4.7.6",
+    "hono-pino": "^0.8.0",
+    "pino": "^9.6.0",
+    "zod": "^3.24.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.24.0",
@@ -31,6 +37,7 @@
     "eslint-plugin-perfectionist": "^4.11.0",
     "eslint-plugin-unicorn": "^58.0.0",
     "globals": "^16.0.0",
+    "pino-pretty": "^13.0.0",
     "tsc-alias": "^1.8.15",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3",
@@ -38,5 +45,6 @@
   },
   "engines": {
     "node": ">=23"
-  }
+  },
+  "title": "Personal Finance"
 }

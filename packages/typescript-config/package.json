@@ -14,5 +14,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "title": "Personal Finance"
 }
