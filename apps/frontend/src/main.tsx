@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client'
 
 // Import the generated route tree
 import { AuthProvider, useAuth } from '@/contexts/auth-context'
+import { ThemeProvider } from '@/contexts/theme-provider'
 import { routeTree } from '@/routeTree.gen'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 
@@ -35,7 +36,11 @@ function App() {
 
 function InnerApp() {
   const auth = useAuth()
-  return <RouterProvider context={{ auth }} router={router} />
+  return (
+    <ThemeProvider>
+      <RouterProvider context={{ auth }} router={router} />
+    </ThemeProvider>
+  )
 }
 
 const container = document.getElementById('root')

@@ -11,16 +11,29 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SignupImport } from './routes/signup'
 import { Route as LoginImport } from './routes/login'
+import { Route as AboutImport } from './routes/about'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
-import { Route as AuthAboutImport } from './routes/_auth.about'
 
 // Create/Update Routes
+
+const SignupRoute = SignupImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRoute
+} as any)
 
 const LoginRoute = LoginImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRoute
+} as any)
+
+const AboutRoute = AboutImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRoute
 } as any)
 
@@ -33,12 +46,6 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute
-} as any)
-
-const AuthAboutRoute = AuthAboutImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => AuthRoute
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -59,6 +66,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutImport
+      parentRoute: typeof rootRoute
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -66,69 +80,66 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/_auth/about': {
-      id: '/_auth/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AuthAboutImport
-      parentRoute: typeof AuthImport
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupImport
+      parentRoute: typeof rootRoute
     }
   }
 }
 
 // Create and export the route tree
 
-interface AuthRouteChildren {
-  AuthAboutRoute: typeof AuthAboutRoute
-}
-
-const AuthRouteChildren: AuthRouteChildren = {
-  AuthAboutRoute: AuthAboutRoute
-}
-
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
-
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '': typeof AuthRouteWithChildren
+  '': typeof AuthRoute
+  '/about': typeof AboutRoute
   '/login': typeof LoginRoute
-  '/about': typeof AuthAboutRoute
+  '/signup': typeof SignupRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '': typeof AuthRouteWithChildren
+  '': typeof AuthRoute
+  '/about': typeof AboutRoute
   '/login': typeof LoginRoute
-  '/about': typeof AuthAboutRoute
+  '/signup': typeof SignupRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/_auth': typeof AuthRouteWithChildren
+  '/_auth': typeof AuthRoute
+  '/about': typeof AboutRoute
   '/login': typeof LoginRoute
-  '/_auth/about': typeof AuthAboutRoute
+  '/signup': typeof SignupRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/login' | '/about'
+  fullPaths: '/' | '' | '/about' | '/login' | '/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/about'
-  id: '__root__' | '/' | '/_auth' | '/login' | '/_auth/about'
+  to: '/' | '' | '/about' | '/login' | '/signup'
+  id: '__root__' | '/' | '/_auth' | '/about' | '/login' | '/signup'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  AboutRoute: typeof AboutRoute
   LoginRoute: typeof LoginRoute
+  SignupRoute: typeof SignupRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthRoute: AuthRouteWithChildren,
-  LoginRoute: LoginRoute
+  AuthRoute: AuthRoute,
+  AboutRoute: AboutRoute,
+  LoginRoute: LoginRoute,
+  SignupRoute: SignupRoute
 }
 
 export const routeTree = rootRoute
@@ -143,24 +154,25 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_auth",
-        "/login"
+        "/about",
+        "/login",
+        "/signup"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
     "/_auth": {
-      "filePath": "_auth.tsx",
-      "children": [
-        "/_auth/about"
-      ]
+      "filePath": "_auth.tsx"
+    },
+    "/about": {
+      "filePath": "about.tsx"
     },
     "/login": {
       "filePath": "login.tsx"
     },
-    "/_auth/about": {
-      "filePath": "_auth.about.tsx",
-      "parent": "/_auth"
+    "/signup": {
+      "filePath": "signup.tsx"
     }
   }
 }
