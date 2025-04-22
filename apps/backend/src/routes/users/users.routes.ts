@@ -1,5 +1,6 @@
 import { userRequest, userResponse, usersResponse, userUpdateRequest } from '@/db/schemas'
 import * as HttpStatusCodes from '@/lib/constants/http-status-codes'
+import * as Messages from '@/lib/constants/messages'
 import { jsonContent, jsonContentRequired } from '@/lib/openapi/helpers'
 import {
   createErrorSchema,
@@ -14,24 +15,24 @@ const tags = ['Users']
 export const getUserByUsername = createRoute({
   path: '/users/:username',
   method: 'get',
-  summary: 'Get User',
-  description: 'Get user by username',
+  summary: Messages.GET_USER_SUMMARY,
+  description: Messages.GET_USER_DESC,
   request: {
     params: usernameParamsSchema
   },
   responses: {
-    [HttpStatusCodes.OK]: jsonContent(userResponse, 'Get a user by username'),
+    [HttpStatusCodes.OK]: jsonContent(userResponse, Messages.GET_USER_SUCCESS_DESC),
     [HttpStatusCodes.NOT_FOUND]: jsonContent(
-      createMessageObjectSchema('User not found'),
-      'User not found'
+      createMessageObjectSchema(Messages.USER_NOT_FOUND),
+      Messages.USER_NOT_FOUND
     ),
     [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(usernameParamsSchema),
-      'Invalid username error'
+      Messages.INVALID_USERNAME_DESC
     ),
     [HttpStatusCodes.INTERNAL_SERVER_ERROR]: jsonContent(
-      createMessageObjectSchema('Could not complete the request, try again later'),
-      'Could not complete the request, try again later'
+      createMessageObjectSchema(Messages.FETCH_USER_FAILED),
+      Messages.REQUEST_FAILED_DESC
     )
   },
   tags
@@ -40,20 +41,20 @@ export const getUserByUsername = createRoute({
 export const getUsers = createRoute({
   path: '/users',
   method: 'get',
-  summary: 'Get Several Users',
-  description: 'Get several users with pagination options',
+  summary: Messages.GET_USERS_SUMMARY,
+  description: Messages.GET_USERS_DESC,
   request: {
     query: paginationParamSchema
   },
   responses: {
-    [HttpStatusCodes.OK]: jsonContent(usersResponse, 'Get all users'),
+    [HttpStatusCodes.OK]: jsonContent(usersResponse, Messages.GET_USERS_SUCCESS_DESC),
     [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(paginationParamSchema),
-      'Invalid pagination options error'
+      Messages.INVALID_PAGINATION_DESC
     ),
     [HttpStatusCodes.INTERNAL_SERVER_ERROR]: jsonContent(
-      createMessageObjectSchema('Could not complete the request, try again later'),
-      'Could not complete the request, try again later'
+      createMessageObjectSchema(Messages.FETCH_USERS_FAILED),
+      Messages.REQUEST_FAILED_DESC
     )
   },
   tags
@@ -62,20 +63,20 @@ export const getUsers = createRoute({
 export const createUser = createRoute({
   path: '/users',
   method: 'post',
-  summary: 'Create User',
-  description: 'Create a new user using the provided data',
+  summary: Messages.CREATE_USER_SUMMARY,
+  description: Messages.CREATE_USER_DESC,
   request: {
-    body: jsonContentRequired(userRequest, 'User to create')
+    body: jsonContentRequired(userRequest, Messages.CREATE_USER_REQUEST_BODY_DESC)
   },
   responses: {
-    [HttpStatusCodes.CREATED]: jsonContent(userResponse, 'User created'),
+    [HttpStatusCodes.CREATED]: jsonContent(userResponse, Messages.CREATE_USER_SUCCESS_DESC),
     [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(userRequest),
-      'The validation error(s)'
+      Messages.VALIDATION_ERROR_DESC
     ),
     [HttpStatusCodes.CONFLICT]: jsonContent(
-      createMessageObjectSchema('User already exists'),
-      'User already exists'
+      createMessageObjectSchema(Messages.USER_ALREADY_EXISTS),
+      Messages.USER_ALREADY_EXISTS
     )
   },
   tags
@@ -84,28 +85,32 @@ export const createUser = createRoute({
 export const updateUser = createRoute({
   path: '/users/:username',
   method: 'post',
-  summary: 'Update User',
-  description: 'Update a user by username',
+  summary: Messages.UPDATE_USER_SUMMARY,
+  description: Messages.UPDATE_USER_DESC,
   request: {
     params: usernameParamsSchema,
-    body: jsonContentRequired(userUpdateRequest, 'User to create')
+    body: jsonContentRequired(userUpdateRequest, Messages.UPDATE_USER_REQUEST_BODY_DESC)
   },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
-      userUpdateRequest.or(createMessageObjectSchema('No changes to apply')),
-      'User updated'
+      userUpdateRequest.or(createMessageObjectSchema(Messages.UPDATE_NO_CHANGES)),
+      Messages.UPDATE_USER_SUCCESS_DESC
     ),
     [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(userUpdateRequest),
-      'The validation error(s)'
+      Messages.VALIDATION_ERROR_DESC
     ),
     [HttpStatusCodes.NOT_FOUND]: jsonContent(
-      createMessageObjectSchema('User not found'),
-      'User not found'
+      createMessageObjectSchema(Messages.USER_NOT_FOUND),
+      Messages.USER_NOT_FOUND
     ),
     [HttpStatusCodes.CONFLICT]: jsonContent(
-      createMessageObjectSchema('Email already exists'),
-      'Email already exists'
+      createMessageObjectSchema(Messages.EMAIL_ALREADY_EXISTS),
+      Messages.EMAIL_ALREADY_EXISTS
+    ),
+    [HttpStatusCodes.INTERNAL_SERVER_ERROR]: jsonContent(
+      createMessageObjectSchema(Messages.UPDATE_USER_FAILED),
+      Messages.UPDATE_FAILED_DESC
     )
   },
   tags
@@ -114,18 +119,18 @@ export const updateUser = createRoute({
 export const deleteUser = createRoute({
   path: '/users/:username',
   method: 'delete',
-  summary: 'Delete User',
-  description: 'Delete a user by username',
+  summary: Messages.DELETE_USER_SUMMARY,
+  description: Messages.DELETE_USER_DESC,
   request: {
     params: usernameParamsSchema
   },
   responses: {
     [HttpStatusCodes.NO_CONTENT]: {
-      description: 'User deleted'
+      description: Messages.DELETE_USER_SUCCESS_DESC
     },
     [HttpStatusCodes.NOT_FOUND]: jsonContent(
-      createMessageObjectSchema('User not found'),
-      'User not found'
+      createMessageObjectSchema(Messages.USER_NOT_FOUND),
+      Messages.USER_NOT_FOUND
     )
   },
   tags

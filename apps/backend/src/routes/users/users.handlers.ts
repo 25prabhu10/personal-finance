@@ -6,6 +6,7 @@ import { withPagination } from '@/db/db-utils'
 import { userResponse, usersResponse, usersTable } from '@/db/schemas'
 import { createPasswordHash } from '@/lib/auth'
 import * as HttpStatusCodes from '@/lib/constants/http-status-codes'
+import * as Messages from '@/lib/constants/messages'
 import { desc, eq } from 'drizzle-orm'
 import { HTTPException } from 'hono/http-exception'
 
@@ -31,14 +32,14 @@ export const getUserByUsername: AppRouteHandler<GetUserByUsername> = async (c) =
   })
 
   if (!queryData) {
-    return c.json({ message: 'User not found' }, HttpStatusCodes.NOT_FOUND)
+    return c.json({ message: Messages.USER_NOT_FOUND }, HttpStatusCodes.NOT_FOUND)
   }
 
   const result = userResponse.safeParse(queryData)
 
   if (!result.success) {
     throw new HTTPException(HttpStatusCodes.INTERNAL_SERVER_ERROR, {
-      message: 'Failed to fetch user'
+      message: Messages.FETCH_USER_FAILED
     })
   }
 
@@ -67,7 +68,7 @@ export const getUsers: AppRouteHandler<GetUsers> = async (c) => {
 
   if (!result.success) {
     throw new HTTPException(HttpStatusCodes.INTERNAL_SERVER_ERROR, {
-      message: 'Failed to fetch users'
+      message: Messages.FETCH_USERS_FAILED
     })
   }
 
@@ -91,7 +92,7 @@ export const createUser: AppRouteHandler<CreateUser> = async (c) => {
     .onConflictDoNothing()
 
   if (result.length === 0) {
-    return c.json({ message: 'User already exists' }, HttpStatusCodes.CONFLICT)
+    return c.json({ message: Messages.USER_ALREADY_EXISTS }, HttpStatusCodes.CONFLICT)
   }
 
   return c.json(result[0], HttpStatusCodes.CREATED)
@@ -104,40 +105,39 @@ export const updateUser: AppRouteHandler<UpdateUser> = async (c) => {
   const user = await db.query.usersTable.findFirst({
     where: eq(usersTable.username, username),
     columns: {
-      id: false,
-      username: false,
-      passwordHash: false,
-      createdAt: false,
-      updatedAt: false
+      name: true,
+      email: true
     }
   })
 
   if (!user) {
-    return c.json({ message: 'User not found' }, HttpStatusCodes.NOT_FOUND)
+    return c.json({ message: Messages.USER_NOT_FOUND }, HttpStatusCodes.NOT_FOUND)
   }
 
   const dataToUpdate: UserUpdate = {}
 
-  if (updateData.name !== undefined && updateData.name !== user.name)
+  // Only add fields to update if they are provided and different from the current value
+  if (updateData.name !== undefined && updateData.name !== user.name) {
     dataToUpdate.name = updateData.name
-  if (updateData.email !== undefined && updateData.email !== user.email)
-    dataToUpdate.email = updateData.email
-
-  if (Object.keys(dataToUpdate).length === 0) {
-    return c.json({ message: 'No changes to apply' }, HttpStatusCodes.OK)
   }
-
-  if (updateData.email) {
+  if (updateData.email !== undefined && updateData.email !== user.email) {
+    // Check for email conflict before adding it to the update object
     const emailExists = await db.query.usersTable.findFirst({
       where: eq(usersTable.email, updateData.email),
       columns: {
-        username: true
+        username: true // Check if any user (other than potentially the current one) has this email
       }
     })
 
-    if (emailExists?.username) {
-      return c.json({ message: 'Email already exists' }, HttpStatusCodes.CONFLICT)
+    // Allow update if the email doesn't exist OR if it belongs to the current user being updated
+    if (emailExists && emailExists.username !== username) {
+      return c.json({ message: Messages.EMAIL_ALREADY_EXISTS }, HttpStatusCodes.CONFLICT)
     }
+    dataToUpdate.email = updateData.email
+  }
+
+  if (Object.keys(dataToUpdate).length === 0) {
+    return c.json({ message: Messages.UPDATE_NO_CHANGES }, HttpStatusCodes.OK)
   }
 
   const result = await db
@@ -150,7 +150,9 @@ export const updateUser: AppRouteHandler<UpdateUser> = async (c) => {
     })
 
   if (result.length === 0) {
-    return c.json({ message: 'Email already exists' }, HttpStatusCodes.CONFLICT)
+    throw new HTTPException(HttpStatusCodes.INTERNAL_SERVER_ERROR, {
+      message: Messages.UPDATE_USER_FAILED
+    })
   }
 
   return c.json(result[0], HttpStatusCodes.OK)
@@ -166,20 +168,11 @@ export const deleteUser: AppRouteHandler<DeleteUser> = async (c) => {
   })
 
   if (!user?.username) {
-    return c.json({ message: 'User not found' }, HttpStatusCodes.NOT_FOUND)
+    return c.json({ message: Messages.USER_NOT_FOUND }, HttpStatusCodes.NOT_FOUND)
   }
 
-  // Delete the user
-  const result = await db
-    .delete(usersTable)
-    .where(eq(usersTable.username, username))
-    .returning({ username: usersTable.username })
-
-  if (result.length === 0) {
-    throw new HTTPException(HttpStatusCodes.INTERNAL_SERVER_ERROR, {
-      message: 'Failed to delete user'
-    })
-  }
+  // Attempt to delete the user
+  await db.delete(usersTable).where(eq(usersTable.username, username))
 
   return c.body(null, HttpStatusCodes.NO_CONTENT)
 }
